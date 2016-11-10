@@ -1,24 +1,28 @@
 package org.apache.cordova.firebase;
 
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
+import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 
-public class OnNotificationOpenReceiver extends BroadcastReceiver {
+import com.redskyit.mobile.rmcv2.firebase.FirebasePlugin;
+
+public class OnNotificationOpenReceiver extends WakefulBroadcastReceiver {
+
+    static String TAG = "Bizboard:Firebase";
+
+    // This is called when a notification (as triggered by FireBasePluginMessagingService
+    // onMessageReceived() when the payload contains a notification) is opened by the user.
+    //
+    // We only create a notification if the client is in background.  When the client is in
+    // foreground, onMessageReceived() will send the message directly to the client, even if
+    // the payload contained a notification, in which case it sets notification true.
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        PackageManager pm = context.getPackageManager();
-        Intent launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
-
-        launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        Bundle data = intent.getExtras();
-        data.putBoolean("tap", true);
-        FirebasePlugin.sendNotification(data);
-        launchIntent.putExtras(data);
-        context.startActivity(launchIntent);
+        Log.d(TAG, "RECEIVE OPEN NOTIFICATION " + intent);
+        FirebasePlugin.onBroadcastReceive(context, intent);
+        completeWakefulIntent(intent);
+        Log.d(TAG, "COMPLETE NOTIFICATION " + intent);
     }
 }
