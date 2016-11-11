@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
-import com.redskyit.mobile.rmcv2.firebase.FirebasePlugin;
 
 public class OnNotificationOpenReceiver extends WakefulBroadcastReceiver {
 
