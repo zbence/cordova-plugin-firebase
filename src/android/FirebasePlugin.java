@@ -160,7 +160,9 @@ public class FirebasePlugin extends CordovaPlugin {
                 data.putString("opened", "true");
                 FirebasePlugin.handleNotificationBundle(data);
             } else {
-                Log.d(TAG, "Not a notification intent, ignored");
+                Log.d(TAG, "A notification intent from background");
+                data.putString("broadcast", "true");
+                FirebasePlugin.handleNotificationBundle(data);
             }
         }
     }
